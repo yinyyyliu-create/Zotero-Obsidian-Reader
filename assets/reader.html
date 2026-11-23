@@ -1,0 +1,588 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>@@PAGE_TITLE@@</title>
+<style>:root{color-scheme:light;--paper:#f8f6f0;--navy:#14283f;--ink:#1c2b36;--muted:#526474;--line:#d9dad3;--zh:#f0ece2;--sticky:110px;--a:#ead98e;--b:#f2b9b6;--c:#c7e1f5;--d:#cce3cc;--e:#ddcaef}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.58 "IBM Plex Sans","Microsoft YaHei","PingFang SC",Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button,select,summary{cursor:pointer}
+button,select,input[type=search]{border:1px solid #bac6c9;border-radius:.45rem;background:#fff;padding:.38rem .64rem}
+button:hover,select:hover{background:#eff3f4}
+a{color:#245273;text-underline-offset:.19em}
+:focus-visible{outline:3px solid #17718f;outline-offset:3px}
+[hidden]{display:none!important}
+:target,.reading-row,.section-head{scroll-margin-top:calc(var(--sticky) + 1rem)}
+.wrap{width:min(1440px,100% - 72px);margin-inline:auto}
+.masthead{background:var(--navy);color:#fff;border-bottom:4px solid #92b2c0}
+.masthead .wrap{padding:2.5rem 0 2rem}
+.course{margin:0 0 .65rem;color:#c6dae3;font-size:.86rem;font-weight:700;letter-spacing:.12em}
+h1{font:700 clamp(1.8rem,3.3vw,3.25rem)/1.15 Lora,Georgia,serif;max-width:1150px;margin:0 0 .65rem}
+.subtitle{color:#e1edf1;margin:.55rem 0 .7rem;font-size:1.13rem}
+.byline{margin:.6rem 0;color:#f3f5f6}
+.metadata{display:flex;flex-wrap:wrap;gap:.35rem 1.25rem;margin:.4rem 0 0;color:#c6dae3;font-size:.9rem}
+.sticky{position:sticky;top:0;background:#fbfaf6;z-index:8;box-shadow:0 1px 8px #14283f14;border-bottom:1px solid var(--line)}
+.tools{display:flex;gap:.6rem;align-items:center;padding:.65rem 0 .45rem}
+#find{display:flex;gap:.4rem;flex:0 1 34rem;min-width:0}
+#find input{min-width:0;flex:1}
+.menu{margin-left:auto;position:relative}
+.menu summary{white-space:nowrap;list-style:none;padding:.36rem .68rem;background:var(--navy);border-radius:.45rem;color:white}
+.menu summary::after{content:" ▾"}
+.menu>div{position:absolute;right:0;top:calc(100% + 7px);min-width:13.5rem;background:#fff;border:1px solid var(--line);border-radius:.6rem;box-shadow:0 6px 24px #14283f26;padding:.55rem;display:grid;gap:.27rem;z-index:10}
+.menu button{text-align:left}
+.toc{display:flex;overflow-x:auto;gap:.3rem;padding:.12rem 0 .38rem;scrollbar-width:thin}
+.toc a{flex:none;padding:.3rem .55rem;font-size:.86rem;white-space:nowrap;text-decoration:none;border-radius:.35rem}
+.toc a:hover,.toc a[aria-current]{background:#e3edf0;color:#14283f}
+.rail{height:3px;background:#e8e8df}
+#progress-fill{width:0;height:100%;background:#32788a}
+.legend{padding:1.15rem 0 .7rem;font-size:.92rem;color:var(--muted)}
+.legend p{margin:.6rem 0 .45rem}
+.keys{display:flex;gap:.45rem;flex-wrap:wrap}
+.keys span{padding:.15rem .55rem;border-radius:.35rem;color:#273237}
+.thesis{background:var(--a)}.concept{background:var(--b)}.evidence{background:var(--c)}.qualifier{background:var(--d)}.method{background:var(--e)}
+.reader-status{display:flex;gap:.8rem;flex-wrap:wrap;font-size:.85rem}
+.section-head{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid var(--line);margin:2.1rem 0 1.1rem}
+.section-head h2,.section-head h3{margin:0;color:var(--navy);flex:1;line-height:1.3}
+.section-head h2{font:700 clamp(1.42rem,2.2vw,2rem)/1.23 Lora,Georgia,"Microsoft YaHei",serif}
+.section-head h3{font:700 1.32rem/1.25 Lora,Georgia,"Microsoft YaHei",serif}
+.section-head h4{margin:0;color:var(--navy);flex:1;font:700 1.14rem/1.3 Lora,Georgia,"Microsoft YaHei",serif}
+.section-head h4 span{display:block;font:.84em/1.55 "IBM Plex Sans","Microsoft YaHei",Arial,sans-serif;color:#455b68;margin-top:.18rem}
+.section-head h2 span,.section-head h3 span{display:block;font:.79em/1.55 "IBM Plex Sans","Microsoft YaHei",Arial,sans-serif;color:#455b68;margin-top:.18rem}
+.locator,.source-line{color:#526474;font-size:.78rem}
+.bookmark{border-color:transparent;background:transparent;font-size:1.35rem;line-height:1;padding:.32rem .52rem;color:#36536a}
+.bookmark[aria-pressed=true]{color:#83580d;background:#f4e6bf}
+.reading-row,.overview{display:grid;grid-template-columns:minmax(0,1.86fr) minmax(0,1fr);gap:clamp(1rem,2.4vw,2rem)}
+.reading-row{align-items:start;padding:1rem 0 1.2rem;border-bottom:1px solid var(--line)}
+.source-line{display:flex;gap:.55rem;align-items:center;margin-bottom:.52rem}
+.source-line a{font-weight:700}
+.en{font:1.06rem/1.74 Lora,Georgia,"Microsoft YaHei",serif;overflow-wrap:anywhere;margin:0}
+.zh{border-top:1px solid #d7d1c3;border-left:2px solid #b8a87c;background:var(--zh);padding:.75rem .9rem;margin:.8rem 0 0;line-height:1.82}
+.keywords p{margin:.27rem 0}
+.annotation{padding-top:.12rem}
+.ai{background:#edf1f0;border-left:3px solid #78989e;border-radius:.56rem;padding:.68rem .92rem .7rem}
+.ai h3{margin:0 0 .37rem;color:#234658;font-size:.95rem}
+dl,dd{margin:0}
+dl>div{margin:.33rem 0}
+dt{font-size:.77rem;font-weight:700;color:#315365}
+dd{font-size:.9rem;line-height:1.6}
+.personal{margin-top:.45rem}
+.note-open{font-size:.83rem;background:#fcfbf7}
+.note-preview{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.9rem;margin:.45rem 0 0;background:#fffaf1;padding:.6rem .7rem;border-left:2px solid #c29a52}
+mark{border-radius:.15rem;color:inherit;padding:.04em 0}
+mark.mine{box-shadow:inset 0 -2px #344c71;cursor:pointer}
+.reading-row:target{background:#eef3f144}
+.match-current{outline:2px solid #618e9d;outline-offset:5px}
+figure{margin:.35rem 0 .6rem;background:white;padding:.3rem;border:1px solid var(--line);border-radius:.38rem;text-align:center}
+figure img,.equation img{max-width:100%;height:auto;object-fit:contain}
+.visual-asset{display:block;text-align:center;margin:.35rem 0 .6rem;padding:.3rem;border:1px solid var(--line);border-radius:.38rem;background:#fff}
+.visual-asset img{max-width:100%;height:auto;vertical-align:middle}
+.equation{display:block;overflow-x:auto;padding:.36rem .43rem;margin:.3rem 0;background:#fff;border-radius:.28rem}
+.equation img{display:block;min-width:min(100%,200px)}
+.table-scroll{overflow-x:auto;margin:.4rem 0 .7rem}
+table{border-collapse:collapse;width:100%;background:#fff;font-size:.85rem}
+th,td{padding:.45rem .5rem;text-align:left;border:1px solid var(--line)}
+th{background:#e8eff1;font-weight:600}
+.reference .en{font-size:.95rem}
+.reference .zh{padding:.45rem .7rem;margin-top:.45rem;font-size:.88rem}
+.reference{padding:.55rem 0 .7rem}
+.overview{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:1rem}
+.overview section{background:#fdfbf7;padding:1rem;border:1px solid var(--line);border-radius:.5rem}
+.overview h3{font-size:1.04rem;margin:0;color:#234658}
+.overview p{margin:.4rem 0}
+.citations a{font-size:.8rem;margin-right:.35rem;white-space:nowrap}
+footer{border-top:1px solid var(--line);margin-top:1.7rem;padding:.5rem 0 1.3rem;color:var(--muted);font-size:.88rem}
+.palette{position:fixed;z-index:20;display:flex;flex-wrap:wrap;gap:.25rem;max-width:calc(100vw - 20px);background:#fff;padding:.38rem;border-radius:.48rem;box-shadow:0 4px 18px #14283f45}
+.palette button{font-size:.85rem;padding:.28rem .43rem;color:#21303a}
+dialog{border:1px solid var(--line);border-radius:.75rem;color:var(--ink);background:var(--paper);max-width:min(36rem,calc(100% - 2rem));padding:1.15rem 1.3rem}
+dialog::backdrop{background:#14283f66}
+dialog h2{margin:.1rem 0 .35rem;font-size:1.24rem}
+dialog textarea{width:min(31rem,100%);display:block;padding:.6rem .75rem;border:1px solid #aababb;border-radius:.45rem;resize:vertical}
+.dialog-actions{display:flex;gap:.5rem;justify-content:flex-end;margin-top:.75rem}
+.primary{color:white;background:var(--navy)}
+.primary:hover{background:#254762}
+.danger{color:#963632}
+.confirm{display:block}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:760px){
+ body{overflow-x:clip;overflow-wrap:anywhere}
+ .wrap{width:calc(100% - 28px)}
+ .reading-row,.overview{grid-template-columns:minmax(0,1fr);gap:.65rem}
+ .masthead .wrap{padding:1.6rem 0 1.2rem}
+ .tools{flex-wrap:wrap}
+ #find{flex:1 1 100%}
+ .section-head{margin-top:1.5rem}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media print{
+ @page{margin:12mm}
+ .wrap{width:100%}
+ body,.masthead,.overview section{background:white;color:black}
+ .masthead{border-bottom:1px solid #555}
+ .masthead .wrap{padding:0 0 .7rem}
+ .course,.metadata,.byline,.subtitle{color:#333}
+ h1{font-size:24pt}
+ .sticky,.legend,.bookmark,.note-open,.palette,dialog{display:none!important}
+ .reading-row{display:grid!important;gap:10pt;grid-template-columns:2fr 1fr}
+ .overview{grid-template-columns:1fr 1fr}
+ .section-head{break-after:avoid}
+ .ai,figure,.equation{break-inside:avoid}
+ .en{font-size:10.5pt}
+ dd,.zh{font-size:9.5pt}
+ *{print-color-adjust:exact}
+}
+</style></head>
+<body>
+@@MASTHEAD@@
+<div class="sticky" id="sticky">
+  <div class="wrap tools">
+    <form id="find" role="search"><label class="sr-only" for="query">搜索全文</label><input id="query" type="search" placeholder="搜索英中原文、批注和笔记"><button type="submit" aria-label="查找">查找</button></form>
+    <label class="filter"><span class="sr-only">高亮筛选</span><select id="filter" aria-label="高亮筛选"><option value="">全部段落</option><option value="thesis">核心论点</option><option value="concept">概念与术语</option><option value="evidence">证据与数据</option><option value="qualifier">让步与限定</option><option value="method">方法</option><option value="personal">个人高亮</option></select></label>
+    <details class="menu" id="reading-menu"><summary>阅读数据</summary><div>
+      <button id="resume">继续上次阅读</button><button id="view-bookmarks">查看书签</button>
+      <button id="export-json">导出 JSON 备份</button><button id="import-json">导入 JSON 备份</button>
+      <button id="export-md">导出 Markdown 笔记</button><button id="clear-data" class="danger">重置个人数据</button>
+      <input type="file" accept="application/json,.json" id="import-file" hidden>
+    </div></details>
+  </div>
+  <nav class="wrap toc" aria-label="论文章节">@@NAV@@</nav>
+  <div class="rail"><div id="progress-fill"></div></div>
+</div>
+<main class="wrap">
+<section class="legend" aria-label="高亮图例">
+  <div class="keys"><span class="thesis">核心论点</span><span class="concept">概念与术语</span><span class="evidence">证据与数据</span><span class="qualifier">让步与限定</span><span class="method">方法</span></div>
+  <p>选中同一英文文本块内的文字即可添加高亮。个人数据保存在此浏览器中，备份可用 JSON 迁移。</p>
+  <div class="reader-status"><span id="progress-value">阅读位置 0%</span><span id="filter-status" aria-live="polite"></span><span id="status" role="status"></span></div>
+  <noscript><p>当前浏览器禁用了 JavaScript。可阅读全文，启用 JavaScript 后可使用批注、搜索和备份。</p></noscript>
+</section>
+@@CONTENT@@
+</main>
+<div id="palette" class="palette" hidden aria-label="个人高亮">
+  <button data-color="thesis" class="thesis">论点</button><button data-color="concept" class="concept">概念</button><button data-color="evidence" class="evidence">证据</button><button data-color="qualifier" class="qualifier">限定</button><button data-color="method" class="method">方法</button>
+</div>
+<dialog id="note-dialog"><form method="dialog"><h2>个人笔记</h2><p id="note-heading"></p><textarea id="note-text" rows="8" placeholder="记录你的阅读笔记…"></textarea><div class="dialog-actions"><button value="cancel">取消</button><button value="delete" class="danger">删除笔记</button><button value="save" class="primary">保存笔记</button></div></form></dialog>
+<dialog id="bookmarks-dialog"><form method="dialog"><h2>章节书签</h2><ul id="bookmark-list"></ul><div class="dialog-actions"><button value="close">关闭</button></div></form></dialog>
+<dialog id="reset-dialog"><form method="dialog"><h2>重置个人阅读数据</h2><p>将删除当前浏览器中本论文的个人高亮、笔记、书签及进度。已下载的备份文件仍可重新导入。</p><label class="confirm"><input id="agree-reset" type="checkbox"> 我确认清除这些数据</label><div class="dialog-actions"><button value="cancel">取消</button><button id="confirm-reset" class="danger" value="confirm" disabled>确认重置</button></div></form></dialog>
+<script>const PAPER=@@PAPER@@;
+'use strict';
+const byId = id => document.getElementById(id);
+const articleRows = [...document.querySelectorAll('.reading-row')];
+const blocks = new Map(articleRows.map(row => [row.id, {
+  row,
+  segments:[...row.querySelectorAll('.selectable')].map(node => {
+    let offset = 0;
+    const pieces = [...node.childNodes].map(child => {
+      const text = child.textContent;
+      const piece = {start:offset,end:offset+text.length,category:child.dataset?.kind};
+      offset = piece.end;
+      return piece;
+    });
+    return {node,text:node.textContent,pieces};
+  }),
+  note:row.querySelector('.note-preview'),
+  button:row.querySelector('.note-open'),
+}]));
+const links = [...document.querySelectorAll('.toc a')];
+const sections = new Map(links.map(link => [link.hash.slice(1),link.textContent]));
+const categories = new Set(['thesis','concept','evidence','qualifier','method']);
+const labels = {thesis:'核心论点',concept:'概念与术语',evidence:'证据与数据',qualifier:'让步与限定',method:'方法'};
+const storageKey = 'bilingual-reader:' + PAPER.zoteroKey + ':' + PAPER.sourceFingerprint + ':v1';
+const emptyState = () => ({
+  version:1, paper:{...PAPER},
+  highlights:[], notes:Object.create(null), bookmarks:[], progress:{anchor:null,fraction:0}
+});
+const status = byId('status');
+const query = byId('query');
+const filter = byId('filter');
+const palette = byId('palette');
+const noteDialog = byId('note-dialog');
+const resetDialog = byId('reset-dialog');
+let state = emptyState();
+let pendingRange;
+let noteId;
+let searchPosition = -1;
+let searchRows = [];
+let scrollFrame = 0;
+let saveTimer = 0;
+let storageFailed = false;
+
+function message(text) {
+  status.textContent = text;
+  if (text) status.setAttribute('title',text);
+}
+function persist() {
+  try { localStorage.setItem(storageKey,JSON.stringify(state)); }
+  catch (err) {
+    storageFailed = true;
+    message('浏览器无法写入本地存储，请导出 JSON 以保留这次阅读数据。');
+  }
+}
+function validHighlight(item) {
+  if (!item || !categories.has(item.category) || !Number.isInteger(item.segment)) return false;
+  const seg = blocks.get(item.paragraphId)?.segments[item.segment];
+  return !!seg && Number.isInteger(item.start) && Number.isInteger(item.end) &&
+    0 <= item.start && item.start < item.end && item.end <= seg.text.length &&
+    item.quote === seg.text.slice(item.start,item.end) && !!item.quote.trim();
+}
+function validate(data) {
+  if (!data || data.version !== 1 || data.paper?.doi !== PAPER.doi ||
+    data.paper?.zoteroKey !== PAPER.zoteroKey || data.paper?.sourceFingerprint !== PAPER.sourceFingerprint) {
+    throw Error('备份版本或论文标识与当前文件不匹配。');
+  }
+  if (!Array.isArray(data.highlights) || data.highlights.length > 6000 ||
+      !data.highlights.every(validHighlight) ||
+      !data.notes || typeof data.notes !== 'object' || Array.isArray(data.notes) ||
+      !Object.entries(data.notes).every(([id,note]) => blocks.has(id) && typeof note === 'string' && note.length <= 24000) ||
+      !Array.isArray(data.bookmarks) || !data.bookmarks.every(id => sections.has(id)) ||
+      !data.progress || !Number.isFinite(data.progress.fraction) || data.progress.fraction < 0 || data.progress.fraction > 1 ||
+      !(data.progress.anchor === null || blocks.has(data.progress.anchor) || sections.has(data.progress.anchor))) {
+    throw Error('备份数据结构或段落锚点有误。');
+  }
+  const result = emptyState();
+  result.highlights = data.highlights.map(({paragraphId,segment,start,end,category,quote}) =>
+    ({paragraphId,segment,start,end,category,quote}));
+  for (const [id,note] of Object.entries(data.notes)) result.notes[id] = note;
+  result.bookmarks = [...new Set(data.bookmarks)];
+  result.progress = {anchor:data.progress.anchor,fraction:data.progress.fraction};
+  return result;
+}
+try {
+  const cached = localStorage.getItem(storageKey);
+  if (cached) state = validate(JSON.parse(cached));
+} catch (err) {
+  storageFailed = true;
+  message('本地阅读数据无法加载。可从已导出的 JSON 恢复。');
+}
+
+function paintBlock(id) {
+  const block = blocks.get(id);
+  const personal = state.highlights.filter(item => item.paragraphId === id);
+  block.segments.forEach((seg,index) => {
+    const selections = personal.filter(item => item.segment === index);
+    const boundaries = new Set([0,seg.text.length]);
+    for (const p of [...seg.pieces,...selections]) {
+      boundaries.add(p.start); boundaries.add(p.end);
+    }
+    const cuts = [...boundaries].sort((a,b) => a-b);
+    const fragment = document.createDocumentFragment();
+    for (let k=0;k<cuts.length-1;k++) {
+      const start = cuts[k];
+      const end = cuts[k+1];
+      const userMark = selections.findLast(item => item.start <= start && item.end >= end);
+      const aiMark = seg.pieces.find(item => item.category && item.start <= start && item.end >= end);
+      const str = seg.text.slice(start,end);
+      if (!userMark && !aiMark) {
+        fragment.append(document.createTextNode(str));
+        continue;
+      }
+      const mark = document.createElement('mark');
+      mark.textContent = str;
+      if (aiMark) mark.dataset.aiKind = aiMark.category;
+      if (userMark) {
+        mark.className = userMark.category + ' mine';
+        mark.dataset.mine = JSON.stringify([index,userMark.start,userMark.end,userMark.category]);
+        mark.title = '个人高亮 · ' + labels[userMark.category] + '（点击可移除）';
+      } else {
+        mark.className = aiMark.category;
+        mark.title = 'AI 高亮 · ' + labels[aiMark.category];
+      }
+      fragment.append(mark);
+    }
+    seg.node.replaceChildren(fragment);
+  });
+  block.note.textContent = state.notes[id] ?? '';
+  block.note.hidden = !block.note.textContent;
+  block.button.textContent = block.note.hidden ? '＋ 个人笔记' : '编辑个人笔记';
+}
+function paintBookmarks() {
+  document.querySelectorAll('.bookmark').forEach(button => {
+    const saved = state.bookmarks.includes(button.dataset.section);
+    button.textContent = saved ? '★' : '☆';
+    button.setAttribute('aria-pressed',String(saved));
+    button.setAttribute('aria-label',saved?'移除章节书签':'添加章节书签');
+  });
+}
+function applyFilters() {
+  const keyword = query.value.trim().toLocaleLowerCase();
+  const type = filter.value;
+  searchPosition = -1;
+  searchRows = [];
+  for (const [id,{row,segments}] of blocks) {
+    const match = !keyword || row.textContent.toLocaleLowerCase().includes(keyword);
+    const personal = state.highlights.filter(item => item.paragraphId === id);
+    const marked = !type || (type === 'personal' ? personal.length > 0 :
+      personal.some(item => item.category === type) ||
+      segments.some(seg => seg.pieces.some(piece => piece.category === type)));
+    row.hidden = !match || !marked;
+    row.classList.remove('match-current');
+    if (!row.hidden) searchRows.push(row);
+  }
+  byId('filter-status').textContent = keyword || type ? '符合条件 ' + searchRows.length + ' 项' : '';
+}
+function setupView() {
+  for (const id of blocks.keys()) paintBlock(id);
+  paintBookmarks();
+  applyFilters();
+  updateProgress(state.progress.fraction);
+}
+setupView();
+
+function goTo(id) {
+  const dest = byId(id);
+  if (!dest) return;
+  if (dest.hidden) {
+    query.value = '';
+    filter.value = '';
+    applyFilters();
+  }
+  dest.scrollIntoView({block:'start', behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+const sticky = byId('sticky');
+const resize = () => document.documentElement.style.setProperty('--sticky',sticky.offsetHeight+'px');
+resize();
+if ('ResizeObserver' in window) new ResizeObserver(resize).observe(sticky);
+
+query.addEventListener('input',applyFilters);
+filter.addEventListener('change',applyFilters);
+byId('find').addEventListener('submit',event => {
+  event.preventDefault();
+  if (!searchRows.length || !query.value.trim()) return;
+  if (searchPosition >= 0) searchRows[searchPosition].classList.remove('match-current');
+  searchPosition = (searchPosition + 1) % searchRows.length;
+  const row = searchRows[searchPosition];
+  row.classList.add('match-current');
+  byId('filter-status').textContent = '结果 ' + (searchPosition+1) + ' / ' + searchRows.length;
+  goTo(row.id);
+});
+document.addEventListener('click',event => {
+  const internal = event.target.closest('a[href^="#"]');
+  if (internal) {
+    event.preventDefault();
+    const id = internal.hash.slice(1);
+    try { history.replaceState(null,'','#'+id); } catch (error) {}
+    goTo(id);
+  }
+  const bookmark = event.target.closest('[data-section]');
+  if (bookmark) {
+    const id = bookmark.dataset.section;
+    if (state.bookmarks.includes(id)) state.bookmarks = state.bookmarks.filter(saved => saved !== id);
+    else state.bookmarks.push(id);
+    paintBookmarks();
+    persist();
+  }
+  const note = event.target.closest('.note-open');
+  if (note) {
+    noteId = note.dataset.note;
+    byId('note-heading').textContent = noteId.toUpperCase();
+    byId('note-text').value = state.notes[noteId] ?? '';
+    byId('note-text').maxLength = 24000;
+    noteDialog.querySelector('[value=delete]').disabled = !(noteId in state.notes);
+    noteDialog.returnValue = '';
+    noteDialog.showModal();
+  }
+  const mark = event.target.closest('mark[data-mine]');
+  if (mark && getSelection()?.isCollapsed && confirm('移除这条个人高亮？')) {
+    const id = mark.closest('.reading-row').id;
+    const [segment,start,end,category] = JSON.parse(mark.dataset.mine);
+    state.highlights = state.highlights.filter(item =>
+      !(item.paragraphId === id && item.segment === segment && item.start === start && item.end === end && item.category === category));
+    paintBlock(id);
+    persist();
+    applyFilters();
+  }
+});
+noteDialog.addEventListener('close',() => {
+  if (!noteId) return;
+  const value = byId('note-text').value.trim();
+  if (noteDialog.returnValue === 'save' && value) state.notes[noteId] = value;
+  if (noteDialog.returnValue === 'delete' || (noteDialog.returnValue === 'save' && !value)) delete state.notes[noteId];
+  if (['save','delete'].includes(noteDialog.returnValue)) {
+    paintBlock(noteId);
+    persist();
+    applyFilters();
+  }
+  noteId = null;
+});
+function showPalette() {
+  const selection = getSelection();
+  if (!selection || selection.isCollapsed || !selection.rangeCount) {
+    palette.hidden = true;
+    return;
+  }
+  const range = selection.getRangeAt(0);
+  const parent = node => node.nodeType === 1 ? node : node.parentElement;
+  const seg = parent(range.startContainer)?.closest('.selectable');
+  const endSeg = parent(range.endContainer)?.closest('.selectable');
+  if (!seg || seg !== endSeg) { palette.hidden = true; return; }
+  const paragraphId = seg.closest('.reading-row').id;
+  const segment = blocks.get(paragraphId).segments.findIndex(entry => entry.node === seg);
+  const before = document.createRange();
+  before.selectNodeContents(seg);
+  before.setEnd(range.startContainer,range.startOffset);
+  const start = before.toString().length;
+  const quote = range.toString();
+  if (!quote.trim()) { palette.hidden = true; return; }
+  pendingRange = {paragraphId,segment,start,end:start+quote.length,quote};
+  const rect = range.getBoundingClientRect();
+  palette.hidden = false;
+  palette.style.left = Math.max(10,Math.min(innerWidth-palette.offsetWidth-10,rect.left))+'px';
+  const above = rect.top-palette.offsetHeight-9;
+  palette.style.top = (above>sticky.offsetHeight?above:Math.min(innerHeight-palette.offsetHeight-10,rect.bottom+9))+'px';
+}
+let selectionTimer;
+document.addEventListener('selectionchange',() => {
+  clearTimeout(selectionTimer);
+  selectionTimer = setTimeout(showPalette,90);
+});
+palette.addEventListener('mousedown',event => event.preventDefault());
+palette.addEventListener('click',event => {
+  const category = event.target.closest('[data-color]')?.dataset.color;
+  if (!category || !pendingRange) return;
+  const item = {...pendingRange,category};
+  if (validHighlight(item)) {
+    state.highlights = state.highlights.filter(old => !(old.paragraphId === item.paragraphId &&
+      old.segment === item.segment && old.start === item.start && old.end === item.end));
+    state.highlights.push(item);
+    getSelection()?.removeAllRanges();
+    paintBlock(item.paragraphId);
+    persist();
+    applyFilters();
+  }
+  palette.hidden = true;
+  pendingRange = null;
+});
+
+const progressTargets = [...document.querySelectorAll('.section-head,.reading-row')];
+function updateProgress(fraction) {
+  const percent = Math.round(fraction*100);
+  byId('progress-value').textContent = '阅读位置 '+percent+'%';
+  byId('progress-fill').style.width = percent+'%';
+}
+function readPosition() {
+  scrollFrame = 0;
+  if (query.value || filter.value) return;
+  const height = document.documentElement.scrollHeight-innerHeight;
+  const fraction = height > 0 ? Math.max(0,Math.min(1,scrollY/height)) : 0;
+  let active = null;
+  let activeSection = null;
+  const threshold = sticky.offsetHeight+125;
+  for (const target of progressTargets) {
+    if (target.getBoundingClientRect().top>threshold) break;
+    active = target.id;
+    if (sections.has(active)) activeSection=active;
+  }
+  for (const link of links) {
+    if (link.hash === '#'+activeSection) link.setAttribute('aria-current','location');
+    else link.removeAttribute('aria-current');
+  }
+  state.progress = {anchor:active,fraction};
+  updateProgress(fraction);
+  clearTimeout(saveTimer);
+  if (!storageFailed) saveTimer = setTimeout(persist,260);
+}
+addEventListener('scroll',() => {
+  palette.hidden = true;
+  if (!scrollFrame) scrollFrame = requestAnimationFrame(readPosition);
+},{passive:true});
+addEventListener('pagehide',() => { if (saveTimer && !storageFailed) persist(); });
+const menu = byId('reading-menu');
+byId('resume').addEventListener('click',() => {
+  menu.open = false;
+  const saved = {...state.progress};
+  if (saved.anchor) goTo(saved.anchor);
+  else scrollTo({top:saved.fraction*(document.documentElement.scrollHeight-innerHeight),behavior:'smooth'});
+});
+byId('view-bookmarks').addEventListener('click',() => {
+  menu.open = false;
+  const list = byId('bookmark-list');
+  const dialog = byId('bookmarks-dialog');
+  list.replaceChildren();
+  for (const id of state.bookmarks) {
+    const li = document.createElement('li');
+    const button = document.createElement('button');
+    button.type='button';
+    button.textContent=sections.get(id);
+    button.addEventListener('click',() => { dialog.close(); goTo(id); });
+    li.append(button);
+    list.append(li);
+  }
+  if (!list.children.length) {
+    const li=document.createElement('li');
+    li.textContent='暂无章节书签';
+    list.append(li);
+  }
+  dialog.showModal();
+});
+function download(name,text,mime) {
+  const url = URL.createObjectURL(new Blob([text],{type:mime+';charset=utf-8'}));
+  const link = document.createElement('a');
+  link.download = name;
+  link.href = url;
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url),10000);
+}
+byId('export-json').addEventListener('click',() => {
+  menu.open = false;
+  download(PAPER.zoteroKey+'-reading.json',JSON.stringify(state,null,2),'application/json');
+});
+byId('import-json').addEventListener('click',() => {
+  menu.open = false;
+  byId('import-file').click();
+});
+byId('import-file').addEventListener('change',async event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  try {
+    if (file.size>12e6) throw Error('备份文件超过 12 MB。');
+    const imported = validate(JSON.parse(await file.text()));
+    if (!confirm('用这份备份替换当前论文的个人阅读数据？')) return;
+    clearTimeout(saveTimer);
+    state = imported;
+    setupView();
+    persist();
+    alert('JSON 备份已导入。');
+  } catch (error) {
+    alert('导入失败。'+error.message);
+  }
+});
+byId('export-md').addEventListener('click',() => {
+  menu.open = false;
+  const output = ['# '+PAPER.title,'','DOI '+PAPER.doi,'',
+    '## 章节书签','',...state.bookmarks.map(id => '- '+sections.get(id)+'（'+id+'）'),'',
+    '## 个人笔记',''];
+  for (const id of blocks.keys()) {
+    if (state.notes[id]) output.push('### '+id.toUpperCase(),'',state.notes[id],'');
+  }
+  output.push('## 个人高亮','');
+  for (const item of state.highlights) {
+    output.push('- '+item.paragraphId.toUpperCase()+' · '+labels[item.category]+' · '+item.quote.replace(/\r?\n/g,' '));
+  }
+  output.push('','## 阅读进度','','- '+Math.round(state.progress.fraction*100)+'%'+
+    (state.progress.anchor?' · '+state.progress.anchor.toUpperCase():''));
+  download(PAPER.zoteroKey+'-reading.md',output.join('\n'),'text/markdown');
+});
+const agree = byId('agree-reset');
+const resetConfirm = byId('confirm-reset');
+agree.addEventListener('change',() => { resetConfirm.disabled = !agree.checked; });
+byId('clear-data').addEventListener('click',() => {
+  menu.open = false;
+  agree.checked = false;
+  resetConfirm.disabled = true;
+  resetDialog.returnValue = '';
+  resetDialog.showModal();
+});
+resetDialog.addEventListener('close',() => {
+  if (resetDialog.returnValue !== 'confirm' || !agree.checked) return;
+  clearTimeout(saveTimer);
+  state = emptyState();
+  try { localStorage.removeItem(storageKey); }
+  catch (error) { message('浏览器无法清除本地存储。'); }
+  setupView();
+  scrollTo({top:0,behavior:'instant'});
+});
+
+</script>
+</body></html>
